@@ -17,9 +17,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="EfJ-nt-cFF">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="3CE-II-8PX" id="I16-YZ-jmy"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="ToDoItemCell" id="Wzo-ji-rQq">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wzo-ji-rQq" id="0wP-vr-4KH">
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
@@ -29,7 +37,7 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="3CE-II-8PX" id="tzQ-sJ-ddE"/>
-                            <outlet property="delegate" destination="3CE-II-8PX" id="aIg-Zd-Lju"/>
+                            <outlet property="delegate" destination="3CE-II-8PX" id="kwq-lK-Ysq"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Todoey" id="dqs-eq-1Yi">
@@ -40,6 +48,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="EfJ-nt-cFF" id="stk-hX-7ca"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WiC-Dv-d5A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

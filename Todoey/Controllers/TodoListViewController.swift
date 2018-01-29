@@ -4,26 +4,26 @@
 //
 //  Created by Amar Singh on 23/01/18.
 //  Copyright © 2018 Amar Singh. All rights reserved.
-//
 
 import UIKit
-
-class TodoListViewController: UITableViewController {
+import CoreData
+class TodoListViewController: UITableViewController{
 
    
     var itemArray = [Item]()
+    @IBOutlet weak var searchBar: UISearchBar!
     
-     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    //To access appDelegate func directly
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
        //print(dataFilePath as Any)
+        searchBar.delegate = self
         
-        
-        // Do any additional setup after loading the view, typically from a nib.
         loadItems()
     }
 
@@ -55,9 +55,10 @@ class TodoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print(itemArray[indexPath.row])
-
-        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+       // context.delete(itemArray[indexPath.row])
+       // itemArray.remove(at: indexPath.row)
         
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         saveItem()
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -72,9 +73,11 @@ class TodoListViewController: UITableViewController {
             // What happens whe the user presses the button.
             if (itemName.text! != ""){
                 
-                let newItem = Item()
+                
+                let newItem = Item(context: self.context)
                 newItem.title = itemName.text!
-            self.itemArray.append(newItem)
+                newItem.done = false
+                self.itemArray.append(newItem)
                 self.saveItem()
                 }
             
@@ -90,32 +93,54 @@ class TodoListViewController: UITableViewController {
     }
     
     func saveItem(){
-        let encoder = PropertyListEncoder()
         
-        do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
-            
-        }catch {
-            print("Error encoding item array. \(error)")
+        do{
+            try context.save()
+        }catch{
+            print("Error saving context \(error)")
         }
         
         self.tableView.reloadData()
         print("Success")
         
     }
+    
     //MARK : loaditems method to load array list from NSEncoder
-    func loadItems (){
+    func loadItems (with request : NSFetchRequest<Item> = Item.fetchRequest()){
+//        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+           itemArray = try context.fetch(request)
+        }catch {
+           print("Error fetching data from request. \(error)")
+        }
+         tableView.reloadData()
+    }
+    
+    
+}
+//MARK: - Search bar method
+extension TodoListViewController: UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        print(searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@",searchBar.text!)
         
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                itemArray = try decoder.decode([Item].self, from: data)
-            }catch{
-                print("Error decoding item array. \(error)")
+        request.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        
+        request.sortDescriptors = [sortDescriptor]
+        
+        loadItems(with : request)
+        tableView.reloadData()
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
             }
-                
+          
         }
     }
 }
-
