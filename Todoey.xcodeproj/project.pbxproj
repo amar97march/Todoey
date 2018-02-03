@@ -13,6 +13,7 @@
 		4C32AC00201759F7002A74E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C32ABFE201759F7002A74E6 /* Main.storyboard */; };
 		4C32AC02201759F7002A74E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C32AC01201759F7002A74E6 /* Assets.xcassets */; };
 		4C32AC05201759F7002A74E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C32AC03201759F7002A74E6 /* LaunchScreen.storyboard */; };
+		4C8C6CDC2020E5E600E8D023 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8C6CDB2020E5E600E8D023 /* CategoryTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		4C32AC01201759F7002A74E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C32AC04201759F7002A74E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C32AC06201759F7002A74E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C8C6CDB2020E5E600E8D023 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				4C32ABFC201759F7002A74E6 /* TodoListViewController.swift */,
+				4C8C6CDB2020E5E600E8D023 /* CategoryTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 				4C32ABFD201759F7002A74E6 /* TodoListViewController.swift in Sources */,
 				4C199655201B910400A8661E /* DataModel.xcdatamodeld in Sources */,
 				4C32ABFB201759F7002A74E6 /* AppDelegate.swift in Sources */,
+				4C8C6CDC2020E5E600E8D023 /* CategoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
