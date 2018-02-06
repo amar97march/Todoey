@@ -99,9 +99,13 @@ class TodoListViewController: UITableViewController{
             if let currentCategory = self.selectedCategory{
                 do {
                 try self.realm.write {
+                let date = Date()
+                    //let formatter = DateFormatter()
                 
+               // formatter.dateFormat = "ddMMyyyy"
                 let newItem = Item()
                 newItem.title = itemName.text!
+                newItem.dateCreated = date
                 currentCategory.items.append(newItem)
                 
 //                    self.saveItem()
@@ -149,30 +153,21 @@ class TodoListViewController: UITableViewController{
     
 }
 //MARK: - Search bar method
-//extension TodoListViewController: UISearchBarDelegate{
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        let request : NSFetchRequest<Item> = Item.fetchRequest()
-//        print(searchBar.text!)
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@",searchBar.text!)
-//
-//       // request.predicate = predicate
-//
-//        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
-//
-//        request.sortDescriptors = [sortDescriptor]
-//
-//        loadItems(with : request,predicate : predicate)
-//        //tableView.reloadData()
-//    }
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//            loadItems()
-//            //main thread
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//
-//        }
-//    }
-//}
+extension TodoListViewController: UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        toDoItems = toDoItems?.filter("title CONTAINS[cd] %@",searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        tableView.reloadData()
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            //main thread
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+
+        }
+    }
+}
 
