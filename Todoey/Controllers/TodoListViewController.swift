@@ -8,7 +8,8 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: UITableViewController{
+
+class TodoListViewController: SwipeTableViewController{
 
    
     var toDoItems : Results<Item>?
@@ -47,7 +48,7 @@ class TodoListViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell",for:indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = toDoItems?[indexPath.row] {
         
@@ -103,11 +104,12 @@ class TodoListViewController: UITableViewController{
                     //let formatter = DateFormatter()
                 
                // formatter.dateFormat = "ddMMyyyy"
-                let newItem = Item()
+                if (itemName.text! != "") {
+                    let newItem = Item()
                 newItem.title = itemName.text!
                 newItem.dateCreated = date
                 currentCategory.items.append(newItem)
-                
+                    }
 //                    self.saveItem()
                     
                     }
@@ -149,7 +151,19 @@ class TodoListViewController: UITableViewController{
       
          tableView.reloadData()
     }
-    
+    override func updateModel(at indexPath: IndexPath) {
+        if let itemToDelete = self.toDoItems?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(itemToDelete)
+                }
+                
+            } catch{
+                print("Error deleting category, \(error)")
+            }
+            //tableView.reloadData()
+        }
+    }
     
 }
 //MARK: - Search bar method
@@ -170,4 +184,6 @@ extension TodoListViewController: UISearchBarDelegate{
         }
     }
 }
+
+
 
