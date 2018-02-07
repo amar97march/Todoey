@@ -10,6 +10,7 @@ import UIKit
 //import CoreData
 import RealmSwift
 //import SwipeCellKit
+import ChameleonFramework
 
 class CategoryTableViewController: SwipeTableViewController {
 
@@ -23,6 +24,7 @@ class CategoryTableViewController: SwipeTableViewController {
 
           loadCategories()
         tableView.rowHeight = 80.0
+        tableView.separatorStyle = .none
         
     }
     //MARK: - TableView Methods
@@ -40,10 +42,14 @@ class CategoryTableViewController: SwipeTableViewController {
         let item = categories?[indexPath.row]
         
         cell.textLabel?.text = item?.name ?? "No Category added yet"
-        
+        if let colorOfCell = item?.colorName {
+            
+        guard let categoryColor = UIColor(hexString: colorOfCell) else {fatalError()}
+
+        cell.backgroundColor = categoryColor
+        cell.textLabel?.textColor = ContrastColorOf(categoryColor, returnFlat: true)
        // cell.accessoryType = item. ? .checkmark : .none
-        
-        
+        }
         return cell
     }
     
@@ -64,6 +70,7 @@ class CategoryTableViewController: SwipeTableViewController {
         let destinationVC = segue.destination as! TodoListViewController
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categories?[indexPath.row]
+            
         }
     }
     
@@ -76,6 +83,7 @@ class CategoryTableViewController: SwipeTableViewController {
             if (itemName.text! != "") {
                 let newCategory = Category()
                 newCategory.name = itemName.text!
+                newCategory.colorName = UIColor.randomFlat.hexValue()
                 //newItem.done = false
                // self.categories.append(newCategory)
                 self.save(category: newCategory)
